@@ -37,7 +37,7 @@ jobs:
           name: java-app
 
       - name: Deploy to Azure Web App
-        uses: azure/webapps-deploy@v3
+        uses: azure/webapps-deploy@de0d38f20b0d18a1f3b0c1e3b5c2e4e65b5e5b5e
         with:
           app-name: 'biblioteka'
           slot-name: 'Production'
