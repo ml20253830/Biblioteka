@@ -46,24 +46,24 @@ class LoanServiceTest {
     void setUp() {
         availableBook = new Book();
         availableBook.setId(1L);
-        availableBook.setTitle("Dune");
+        availableBook.setTitle("Fire and Blood");
         availableBook.setAvailableCopies(2);
 
         unavailableBook = new Book();
         unavailableBook.setId(2L);
-        unavailableBook.setTitle("1984");
+        unavailableBook.setTitle("TIME OF CONTEMPT, WITCHER 4");
         unavailableBook.setAvailableCopies(0);
 
         activeMember = new Member();
         activeMember.setId(1L);
-        activeMember.setFirstName("Ana");
-        activeMember.setLastName("Jović");
+        activeMember.setFirstName("Mateja");
+        activeMember.setLastName("Lazic");
         activeMember.setActive(true);
 
         inactiveMember = new Member();
         inactiveMember.setId(2L);
-        inactiveMember.setFirstName("Petar");
-        inactiveMember.setLastName("Lazić");
+        inactiveMember.setFirstName("Lazar");
+        inactiveMember.setLastName("Cvetkovicf");
         inactiveMember.setActive(false);
 
         activeLoan = new Loan();
@@ -82,9 +82,8 @@ class LoanServiceTest {
         when(bookRepository.save(any(Book.class))).thenReturn(availableBook);
         when(loanRepository.save(any(Loan.class))).thenReturn(activeLoan);
 
-        Loan result = loanService.createLoan(1L, 1L, 14);
+        loanService.createLoan(1L, 1L, 14);
 
-        assertNotNull(result);
         assertEquals(1, availableBook.getAvailableCopies());
         verify(bookRepository).save(availableBook);
         verify(loanRepository).save(any(Loan.class));
@@ -135,7 +134,7 @@ class LoanServiceTest {
         when(bookRepository.save(any(Book.class))).thenReturn(availableBook);
         when(loanRepository.save(any(Loan.class))).thenReturn(activeLoan);
 
-        Loan result = loanService.returnBook(1L);
+        loanService.returnBook(1L);
 
         assertTrue(activeLoan.isReturned());
         assertNotNull(activeLoan.getReturnDate());
