@@ -6,7 +6,7 @@ import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class BookTest {
+class ModelTest {
 
     @Test
     void testBookGettersSetters() {
