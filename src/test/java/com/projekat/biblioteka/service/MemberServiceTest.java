@@ -105,4 +105,52 @@ class MemberServiceTest {
         assertFalse(validMember.isActive());
         verify(memberRepository).save(validMember);
     }
+
+    @Test
+    void testGetMemberById_Found() {
+        when(memberRepository.findById(1L)).thenReturn(Optional.of(validMember));
+
+        Optional<Member> result = memberService.getMemberById(1L);
+
+        assertTrue(result.isPresent());
+        assertEquals("Mateja", result.get().getFirstName());
+    }
+
+    @Test
+    void testGetMemberById_NotFound() {
+        when(memberRepository.findById(99L)).thenReturn(Optional.empty());
+
+        Optional<Member> result = memberService.getMemberById(99L);
+
+        assertFalse(result.isPresent());
+    }
+
+    @Test
+    void testUpdateMember_Success() {
+        Member updated = new Member();
+        updated.setFirstName("Mateja");
+        updated.setLastName("Lazić");
+        updated.setPhoneNumber("+381621234567");
+
+        when(memberRepository.findById(1L)).thenReturn(Optional.of(validMember));
+        when(memberRepository.save(any(Member.class))).thenReturn(validMember);
+
+        Member result = memberService.updateMember(1L, updated);
+
+        assertEquals("Mateja", result.getFirstName());
+        assertEquals("Lazić", result.getLastName());
+        assertEquals("+381621234567", result.getPhoneNumber());
+        verify(memberRepository).save(validMember);
+    }
+
+    @Test
+    void testUpdateMember_NotFound_ThrowsException() {
+        Member updated = new Member();
+        updated.setFirstName("Mateja");
+
+        when(memberRepository.findById(99L)).thenReturn(Optional.empty());
+
+        assertThrows(RuntimeException.class, () -> memberService.updateMember(99L, updated));
+        verify(memberRepository, never()).save(any());
+    }
 }
